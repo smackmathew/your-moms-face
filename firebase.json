@@ -1,0 +1,32 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs22",
+      "ignore": ["node_modules", ".git", "tests", "*.local", "vitest.config.ts"],
+      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
+    }
+  ],
+  "hosting": {
+    "public": "frontend/dist",
+    "ignore": ["firebase.json", "**/.*"],
+    "rewrites": [
+      { "source": "/api/products", "function": { "functionId": "products", "region": "us-central1" } },
+      { "source": "/api/checkout", "function": { "functionId": "checkout", "region": "us-central1" } },
+      { "source": "/api/stripe-webhook", "function": { "functionId": "stripeWebhook", "region": "us-central1" } },
+      { "source": "**", "destination": "/index.html" }
+    ],
+    "predeploy": ["npm --prefix frontend run build"]
+  },
+  "emulators": {
+    "firestore": { "port": 8080 },
+    "functions": { "port": 5001 },
+    "hosting": { "port": 5000 },
+    "ui": { "enabled": true },
+    "singleProjectMode": true
+  }
+}
