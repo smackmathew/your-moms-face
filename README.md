@@ -48,7 +48,6 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
    ```sh
    firebase login
    firebase use --add                          # pick your project
-   cp functions/.env.example functions/.env    # fill in PRINTIFY_SHOP_ID, SITE_URL and the rest
    firebase functions:secrets:set PRINTIFY_API_TOKEN
    firebase functions:secrets:set STRIPE_SECRET_KEY
    firebase functions:secrets:set STRIPE_WEBHOOK_SECRET   # enter "placeholder" for now
@@ -70,14 +69,14 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
    `AUTO_SEND_TO_PRODUCTION=true` in `functions/.env` and redeploy so paid orders go straight
    to print. Switch to your live Stripe key when you're ready to sell.
 
-A custom domain goes in Firebase console → Hosting → Add custom domain. Update `SITE_URL` to match.
+A custom domain goes in Firebase console → Hosting → Add custom domain.
 
 ## Settings (`functions/.env`)
 
 | Setting | What it does |
 | --- | --- |
 | `PRINTIFY_SHOP_ID` | The Printify store the site sells from. |
-| `SITE_URL` | The site's address, for Stripe's return links. |
+| `SITE_URL` | Where Stripe sends customers back to. Empty means the address they shopped on. |
 | `FLAT_SHIPPING_CENTS` | Shipping charged per order, in cents (default `599`). |
 | `SHIP_COUNTRIES` | Countries you ship to, as comma-separated codes (default `US`). |
 | `AUTO_SEND_TO_PRODUCTION` | `true` sends paid orders straight to print. `false` leaves them to the store's order approval setting. |

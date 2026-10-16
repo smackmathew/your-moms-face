@@ -10,13 +10,14 @@ import { buildPrintifyOrder, CartError, priceCart, toStoreProduct, type CartItem
 initializeApp();
 const db = getFirestore();
 
-// Set in functions/.env (see functions/.env.example); the secrets with
+// Set in functions/.env; the secrets with
 // `firebase functions:secrets:set <NAME>`.
 const printifyToken = defineSecret("PRINTIFY_API_TOKEN");
 const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
 const stripeWebhookSecret = defineSecret("STRIPE_WEBHOOK_SECRET");
 const printifyShopId = defineString("PRINTIFY_SHOP_ID");
-const siteUrl = defineString("SITE_URL");
+// Empty means "the address the customer is shopping on".
+const siteUrl = defineString("SITE_URL", { default: "" });
 const flatShippingCents = defineString("FLAT_SHIPPING_CENTS", { default: "599" });
 const shipCountries = defineString("SHIP_COUNTRIES", { default: "US" });
 const autoSendToProduction = defineString("AUTO_SEND_TO_PRODUCTION", { default: "false" });
@@ -72,7 +73,7 @@ export const checkout = onRequest({ secrets: [printifyToken, stripeSecretKey] },
     return;
   }
 
-  const base = siteUrl.value().replace(/\/$/, "");
+  const base = (siteUrl.value() || `https://${req.get("x-forwarded-host") ?? req.get("host")}`).replace(/\/$/, "");
   try {
     const session = await stripe().checkout.sessions.create({
       mode: "payment",

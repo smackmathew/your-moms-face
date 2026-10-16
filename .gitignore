@@ -5,8 +5,9 @@ lib/
 .vite/
 *.tsbuildinfo
 
-# Env
+# Env (functions/.env holds non-secret settings and is committed)
 .env
+!functions/.env
 .env.local
 .env.*.local
 .secret.local
