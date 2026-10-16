@@ -33,11 +33,14 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
 **Blaze** plan (Cloud Functions need it; a small shop should stay inside the free allowance).
 
 1. **Printify**
-   - In Printify, go to **Manage stores → Add new store** and choose the **API** option (it may
-     be listed as "Other" or "Custom integration") so orders from this site land in their own store.
-   - Design your products in that store.
-   - Create a token under **Account → Connections → Personal access tokens** with the
-     `shops.read`, `products.read` and `orders.write` scopes.
+   - In Printify, go to **My stores → Add a new store**, choose **API**, and click **Connect**.
+     Orders from this site land in that store.
+   - In that store's settings, set **Order approval** to **Manual** while you test. New stores
+     approve orders on their own after 24 hours and send them to print.
+   - Design your products in that store. You don't need to click **Publish**: products appear on
+     the site once they're saved. In an API store, Publish only locks the product in Printify.
+   - Create a token under **My Profile → Connections** with the `shops.read`, `products.read`
+     and `orders.write` scopes. Printify shows it once, and it expires after a year.
    - Find your shop ID:
      `curl -H "Authorization: Bearer YOUR_TOKEN" https://api.printify.com/v1/shops.json`
 2. **Stripe**: from the Stripe dashboard, copy your secret key (start with the test-mode key).
@@ -61,10 +64,11 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
    firebase functions:secrets:set STRIPE_WEBHOOK_SECRET
    firebase deploy --only functions
    ```
-5. **Test an order** with Stripe's test card `4242 4242 4242 4242`. The order shows up in
-   Printify as **On hold**. Check it, then delete it or send it to production yourself.
-   Once you're happy, set `AUTO_SEND_TO_PRODUCTION=true` in `functions/.env` and redeploy so
-   paid orders go straight to print. Switch to your live Stripe key when you're ready to sell.
+5. **Test an order** with Stripe's test card `4242 4242 4242 4242`. With manual approval on,
+   the order waits in Printify for you. Check it, then cancel it or approve it yourself.
+   Once you're happy, either switch the store's order approval back to automatic, or set
+   `AUTO_SEND_TO_PRODUCTION=true` in `functions/.env` and redeploy so paid orders go straight
+   to print. Switch to your live Stripe key when you're ready to sell.
 
 A custom domain goes in Firebase console → Hosting → Add custom domain. Update `SITE_URL` to match.
 
@@ -76,7 +80,7 @@ A custom domain goes in Firebase console → Hosting → Add custom domain. Upda
 | `SITE_URL` | The site's address, for Stripe's return links. |
 | `FLAT_SHIPPING_CENTS` | Shipping charged per order, in cents (default `599`). |
 | `SHIP_COUNTRIES` | Countries you ship to, as comma-separated codes (default `US`). |
-| `AUTO_SEND_TO_PRODUCTION` | `true` sends paid orders straight to print; `false` leaves them On hold. |
+| `AUTO_SEND_TO_PRODUCTION` | `true` sends paid orders straight to print. `false` leaves them to the store's order approval setting. |
 
 Shipping is a flat rate because Stripe needs the price before it knows the address. Set it near
 your typical Printify shipping cost.
