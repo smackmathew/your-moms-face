@@ -5,6 +5,13 @@ import { formatCents } from "../money";
 import type { Product } from "../types";
 import { useProducts } from "../useProducts";
 
+// Printify names options per blank ("AS Color colors", "Clothing sizes"), so label by type.
+function optionLabel(option: Product["options"][number]): string {
+  if (option.type === "color") return "Color";
+  if (option.type === "size") return "Size";
+  return option.name.replace(/s$/, "");
+}
+
 export default function ProductPage() {
   const { id } = useParams();
   const state = useProducts();
@@ -100,7 +107,7 @@ function ProductDetail({ product }: { product: Product }) {
         {product.options.map((option, index) => (
           <fieldset key={option.name} className="option">
             <legend className="mono">
-              {option.name.replace(/s$/, "")}:{" "}
+              {optionLabel(option)}:{" "}
               <strong>{option.values.find((v) => v.id === selected[index])?.title}</strong>
             </legend>
             <div className="option__values">
