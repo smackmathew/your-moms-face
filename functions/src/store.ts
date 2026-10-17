@@ -44,6 +44,12 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
+/** The variant a Printify mockup was rendered for: https://images.printify.com/mockup/{product}/{variant}/{camera}/… */
+export function mockupVariantId(src: string): number | null {
+  const m = /\/mockup\/[^/]+\/(\d+)\/\d+\//.exec(src);
+  return m ? Number(m[1]) : null;
+}
+
 /** Keeps only the variants a customer can buy. Returns null when there are none. */
 export function toStoreProduct(p: PrintifyProduct): StoreProduct | null {
   if (p.visible === false) return null;
@@ -66,13 +72,21 @@ export function toStoreProduct(p: PrintifyProduct): StoreProduct | null {
     .filter((o) => o.values.length > 0);
 
   const enabledIds = new Set(variants.map((v) => v.id));
+  const colorIds = new Set(p.options.find((o) => o.type === "color")?.values.map((v) => v.id) ?? []);
+  const colorOf = (variantId: number) => p.variants.find((v) => v.id === variantId)?.options.find((id) => colorIds.has(id));
   const images = p.images
-    .filter((img) => img.variant_ids.some((id) => enabledIds.has(id)))
-    .map((img) => ({
-      src: img.src,
-      variantIds: img.variant_ids.filter((id) => enabledIds.has(id)),
-      isDefault: img.is_default === true,
-    }))
+    .map((img) => {
+      let ids = img.variant_ids.filter((id) => enabledIds.has(id));
+      // Printify often tags every mockup with every variant. The variant the mockup was
+      // rendered for is in its URL, so keep only the variants of that one color.
+      const color = colorOf(mockupVariantId(img.src) ?? NaN);
+      if (color !== undefined) {
+        const sameColor = ids.filter((id) => colorOf(id) === color);
+        if (sameColor.length > 0) ids = sameColor;
+      }
+      return { src: img.src, variantIds: ids, isDefault: img.is_default === true };
+    })
+    .filter((img) => img.variantIds.length > 0)
     .sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
 
   return {

@@ -105,6 +105,11 @@ p { margin: 0; max-width: 62ch; }
 }
 .notice--error { border-left-color: var(--danger); }
 
+.error-detail {
+  font-family: var(--f-mono); font-size: 0.8rem; white-space: pre-wrap; overflow-wrap: anywhere;
+  background: var(--panel); border: 1px solid var(--line); padding: 1rem; margin: 0 0 1.5rem;
+}
+
 /* header */
 .site-header { border-bottom: 2px solid var(--ink); background: var(--paper); position: sticky; top: 0; z-index: 10; }
 .site-header__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }

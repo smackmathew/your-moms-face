@@ -32,8 +32,12 @@ export default function ProductPage() {
 
 function ProductDetail({ product }: { product: Product }) {
   const cart = useCart();
-  // Start on the first in-stock variant.
-  const first = product.variants.find((v) => v.available) ?? product.variants[0];
+  // Start on an in-stock variant shown in the main photo, so the picker matches the picture.
+  const pictured = new Set(product.images[0]?.variantIds ?? []);
+  const first =
+    product.variants.find((v) => v.available && pictured.has(v.id)) ??
+    product.variants.find((v) => v.available) ??
+    product.variants[0];
   const [selected, setSelected] = useState<number[]>(() =>
     product.options.map((o) => o.values.find((val) => first.optionIds.includes(val.id))?.id ?? o.values[0].id),
   );

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildPrintifyOrder,
+  mockupVariantId,
   CartError,
   priceCart,
   splitName,
@@ -54,6 +55,28 @@ describe("toStoreProduct", () => {
   it("hides products that aren't visible or have nothing to buy", () => {
     expect(toStoreProduct({ ...tee, visible: false })).toBeNull();
     expect(toStoreProduct({ ...tee, variants: tee.variants.map((v) => ({ ...v, is_enabled: false })) })).toBeNull();
+  });
+});
+
+describe("mockup colors", () => {
+  const all = [1, 2, 3];
+  const shirt: PrintifyProduct = {
+    ...tee,
+    images: [
+      { src: "https://images.printify.com/mockup/abc/3/555/tee.jpg", variant_ids: all, is_default: true },
+      { src: "https://images.printify.com/mockup/abc/2/555/tee.jpg", variant_ids: all },
+      { src: "https://img/elsewhere.png", variant_ids: all },
+    ],
+  };
+
+  it("reads the variant from a mockup URL", () => {
+    expect(mockupVariantId("https://images.printify.com/mockup/abc/37205/102230/x.jpg?camera_label=front")).toBe(37205);
+    expect(mockupVariantId("https://img/elsewhere.png")).toBeNull();
+  });
+
+  it("narrows a mockup tagged with every variant to its own color", () => {
+    const p = toStoreProduct(shirt)!;
+    expect(p.images.map((i) => i.variantIds)).toEqual([[3], [1, 2], all]);
   });
 });
 
