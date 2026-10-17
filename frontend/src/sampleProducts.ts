@@ -17,7 +17,7 @@ function art(garment: Garment, fill: string, ink: string): string {
   const rings = [44, 30, 16]
     .map((r) => `<ellipse cx="250" cy="${cy}" rx="${r * 1.25}" ry="${r}" fill="none" stroke="${ink}" stroke-width="3"/>`)
     .join("");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420"><rect width="500" height="420" fill="#DDE2CF"/><path d="${SHAPES[garment]}" fill="${fill}" stroke="#1A2520" stroke-width="2"/>${rings}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420"><rect width="500" height="420" fill="#F3F5EF"/><path d="${SHAPES[garment]}" fill="${fill}" stroke="#1A2520" stroke-width="2"/>${rings}</svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 

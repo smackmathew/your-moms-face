@@ -7,26 +7,88 @@
       "source": "functions",
       "codebase": "default",
       "runtime": "nodejs22",
-      "ignore": ["node_modules", ".git", "tests", "*.local", "vitest.config.ts"],
-      "predeploy": ["npm --prefix functions run build"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "tests",
+        "*.local",
+        "vitest.config.ts"
+      ],
+      "predeploy": [
+        "npm --prefix functions run build"
+      ]
     }
   ],
   "hosting": {
     "public": "frontend/dist",
-    "ignore": ["firebase.json", "**/.*"],
-    "rewrites": [
-      { "source": "/api/products", "function": { "functionId": "products", "region": "us-central1" } },
-      { "source": "/api/checkout", "function": { "functionId": "checkout", "region": "us-central1" } },
-      { "source": "/api/stripe-webhook", "function": { "functionId": "stripeWebhook", "region": "us-central1" } },
-      { "source": "**", "destination": "/index.html" }
+    "ignore": [
+      "firebase.json",
+      "**/.*"
     ],
-    "predeploy": ["npm --prefix frontend run build"]
+    "rewrites": [
+      {
+        "source": "/api/products",
+        "function": {
+          "functionId": "products",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/checkout",
+        "function": {
+          "functionId": "checkout",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/stripe-webhook",
+        "function": {
+          "functionId": "stripeWebhook",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "predeploy": [
+      "npm --prefix frontend run build"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/assets/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ]
   },
   "emulators": {
-    "firestore": { "port": 8080 },
-    "functions": { "port": 5001 },
-    "hosting": { "port": 5000 },
-    "ui": { "enabled": true },
+    "firestore": {
+      "port": 8080
+    },
+    "functions": {
+      "port": 5001
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    },
     "singleProjectMode": true
   }
 }

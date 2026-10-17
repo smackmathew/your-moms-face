@@ -1,32 +1,19 @@
-/* Layout: a mock geological survey bulletin. Contour-map hero, field-guide sections, hi-vis survey orange as the one loud color. */
+/* Always the white theme, whatever the device's dark-mode setting.
+   Layout: a mock geological survey bulletin. Contour-map hero, field-guide sections, hi-vis survey orange as the one loud color. */
 :root {
-  --paper: #edefe4;
-  --panel: #e2e6d6;
+  --paper: #ffffff;
+  --panel: #f3f5ef;
   --ink: #1a2520;
   --muted: #56635a;
-  --contour: #a9bcae;
+  --contour: #d3ddd5;
   --hivis: #e9a23b;
   --hivis-ink: #1a2520;
-  --line: #c5cdbc;
+  --line: #dfe4d8;
   --danger: #a33a2a;
   --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
   --f-body: "Literata", Georgia, "Times New Roman", serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #121915;
-    --panel: #1a231e;
-    --ink: #e4eadf;
-    --muted: #9aa89e;
-    --contour: #2c3f34;
-    --hivis: #f0b04e;
-    --hivis-ink: #121915;
-    --line: #2c3a32;
-    --danger: #ff8a75;
-    color-scheme: dark;
-  }
 }
 
 * { box-sizing: border-box; }
