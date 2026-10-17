@@ -22,8 +22,9 @@ const flatShippingCents = defineString("FLAT_SHIPPING_CENTS", { default: "599" }
 const shipCountries = defineString("SHIP_COUNTRIES", { default: "US" });
 const autoSendToProduction = defineString("AUTO_SEND_TO_PRODUCTION", { default: "false" });
 
-const printify = () => new PrintifyClient(printifyToken.value(), printifyShopId.value());
-const stripe = () => new Stripe(stripeSecretKey.value());
+// Trimmed because a pasted secret easily picks up a stray space or line break.
+const printify = () => new PrintifyClient(printifyToken.value().trim(), printifyShopId.value().trim());
+const stripe = () => new Stripe(stripeSecretKey.value().trim());
 
 // Printify's API is rate limited, so each function instance keeps the catalog for a few minutes.
 const CATALOG_TTL_MS = 5 * 60 * 1000;
@@ -129,7 +130,7 @@ export const stripeWebhook = onRequest(
   async (req, res) => {
     let event: Stripe.Event;
     try {
-      event = stripe().webhooks.constructEvent(req.rawBody, req.get("stripe-signature") ?? "", stripeWebhookSecret.value());
+      event = stripe().webhooks.constructEvent(req.rawBody, req.get("stripe-signature") ?? "", stripeWebhookSecret.value().trim());
     } catch (err) {
       logger.warn("Rejected a webhook with a bad signature", err);
       res.status(400).send("Bad signature");
