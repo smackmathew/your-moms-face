@@ -144,7 +144,10 @@ export const confirmPublishing = onSchedule({ schedule: "every 5 minutes", secre
       logger.error(`Couldn't confirm publishing for "${p.title}" (${p.id})`, err);
     }
   }
-  if (waiting.length > 0) catalog = null;
+  if (waiting.length > 0) {
+    catalog = null;
+    logger.info(`Confirmed ${waiting.length} product(s) waiting to publish`);
+  }
 });
 
 /** Stripe calls this when a checkout is paid; it places the order at Printify. */
