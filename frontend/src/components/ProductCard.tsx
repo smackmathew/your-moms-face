@@ -16,7 +16,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <h3>{product.title}</h3>
         <div className="card__meta">
           <span className="price">from {formatCents(product.minPriceCents)}</span>
-          {colors.length > 1 ? <span className="mono">{colors.length} colors</span> : null}
+          {colors.length > 1 ? <span className="label">{colors.length} colors</span> : null}
         </div>
       </div>
     </Link>

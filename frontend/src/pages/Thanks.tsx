@@ -14,7 +14,7 @@ export default function Thanks() {
   return (
     <div className="wrap band">
       <div className="sec-head">
-        <span className="mono">Order received</span>
+        <span className="label">Royal decree received</span>
         <h2>Thanks. Your order is going to print.</h2>
         <p>
           A receipt is on its way to your email. Each piece is printed for you, so it ships in 3–7 business days, and

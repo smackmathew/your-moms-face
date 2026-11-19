@@ -21,7 +21,7 @@ export default class ErrorBoundary extends Component<{ children: ReactNode }, St
     return (
       <div className="wrap band">
         <div className="sec-head">
-          <span className="mono">Something broke</span>
+          <span className="label">Something broke</span>
           <h2>This page hit a problem</h2>
           <p>Go back to the shop and try again. If it keeps happening, send us the message below.</p>
         </div>

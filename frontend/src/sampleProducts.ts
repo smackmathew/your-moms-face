@@ -13,11 +13,10 @@ const SHAPES: Record<Garment, string> = {
 };
 
 function art(garment: Garment, fill: string, ink: string): string {
-  const cy = garment === "hat" ? 200 : 210;
-  const rings = [44, 30, 16]
-    .map((r) => `<ellipse cx="250" cy="${cy}" rx="${r * 1.25}" ry="${r}" fill="none" stroke="${ink}" stroke-width="3"/>`)
-    .join("");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420"><rect width="500" height="420" fill="#F3F5EF"/><path d="${SHAPES[garment]}" fill="${fill}" stroke="#1A2520" stroke-width="2"/>${rings}</svg>`;
+  const cy = garment === "hat" ? 190 : 205;
+  // A small crown print, echoing the logo.
+  const crown = `<g transform="translate(250 ${cy}) scale(1.6) translate(-32 -32)" fill="#EAA823" stroke="${ink}" stroke-width="3.6" stroke-linejoin="round"><path d="M14 42 L8 20 L23 30 L32 11 L41 30 L56 20 L50 42 Z"/><path d="M9 48 Q32 42 55 48 L54 57 Q32 51 10 57 Z"/><circle cx="8" cy="16.5" r="4.2"/><circle cx="32" cy="7.5" r="4.2"/><circle cx="56" cy="16.5" r="4.2"/></g>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420"><rect width="500" height="420" fill="#FFFFFF"/><path d="${SHAPES[garment]}" fill="${fill}" stroke="#141414" stroke-width="3"/>${crown}</svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
@@ -33,9 +32,9 @@ interface Spec {
 
 const specs: Spec[] = [
   {
-    id: "sample-contour-tee",
-    title: "Contour Tee",
-    description: "The survey map of Sir Hippo's favorite watering hole, printed on the chest.\nHeavyweight cotton, unisex fit.",
+    id: "sample-heavy-crown-tee",
+    title: "Heavy Is the Crown Tee",
+    description: "The royal motto, worn by those who carry the weight.\nHeavyweight cotton, unisex fit.",
     garment: "tee",
     colors: [
       { title: "Black", hex: "#1D211F", ink: "#E9A23B" },
@@ -46,9 +45,9 @@ const specs: Spec[] = [
     priceCents: 2800,
   },
   {
-    id: "sample-visible-from-orbit-hoodie",
-    title: "Visible From Orbit Hoodie",
-    description: "Midweight fleece pullover with front pocket. Roomy enough for a gentleman of substance.",
+    id: "sample-royally-unbothered-hoodie",
+    title: "Royally Unbothered Hoodie",
+    description: "Midweight fleece pullover with front pocket. For ignoring your problems in comfort.",
     garment: "hoodie",
     colors: [
       { title: "Hi-Vis", hex: "#E9A23B", ink: "#1A2520" },
@@ -58,9 +57,9 @@ const specs: Spec[] = [
     priceCents: 5400,
   },
   {
-    id: "sample-summit-dad-hat",
-    title: "Summit Dad Hat",
-    description: "Unstructured cotton twill cap with an embroidered contour patch. One size, adjustable strap.",
+    id: "sample-nap-king-dad-hat",
+    title: "Nap King Dad Hat",
+    description: "Unstructured cotton twill cap with an embroidered crown. One size, adjustable strap.",
     garment: "hat",
     colors: [
       { title: "Khaki", hex: "#C9B98F", ink: "#1A2520" },
@@ -70,9 +69,9 @@ const specs: Spec[] = [
     priceCents: 3200,
   },
   {
-    id: "sample-field-survey-tee",
-    title: "Field Survey Tee",
-    description: "Garment-dyed tee for riverbank strolls and afternoon wallows. Relaxed fit.",
+    id: "sample-sarcasm-included-tee",
+    title: "Sarcasm Included Tee",
+    description: "Garment-dyed tee. Batteries not included. Sarcasm is. Relaxed fit.",
     garment: "tee",
     colors: [
       { title: "Clay", hex: "#B9805E", ink: "#1A2520" },

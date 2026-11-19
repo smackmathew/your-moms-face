@@ -24,7 +24,7 @@ export default function CartPage() {
     return (
       <div className="wrap band">
         <div className="sec-head">
-          <span className="mono">Cart</span>
+          <span className="label">Cart</span>
           <h2>Your cart is empty</h2>
         </div>
         <Link to="/#shop" className="btn btn--primary">Shop the collection</Link>
@@ -35,7 +35,7 @@ export default function CartPage() {
   return (
     <div className="wrap band">
       <div className="sec-head">
-        <span className="mono">Cart · {cart.count} {cart.count === 1 ? "item" : "items"}</span>
+        <span className="label">Cart · {cart.count} {cart.count === 1 ? "item" : "items"}</span>
         <h2>Your cart</h2>
       </div>
       <div className="cart">
@@ -47,7 +47,7 @@ export default function CartPage() {
               </Link>
               <div className="line__info">
                 <Link to={`/products/${l.productId}`} className="line__title">{l.title}</Link>
-                <span className="mono">{l.variantTitle}</span>
+                <span className="label">{l.variantTitle}</span>
                 <div className="line__controls">
                   <div className="stepper" role="group" aria-label={`Quantity of ${l.title}`}>
                     <button type="button" onClick={() => cart.setQuantity(l.productId, l.variantId, l.quantity - 1)} disabled={l.quantity <= 1} aria-label="One fewer">−</button>

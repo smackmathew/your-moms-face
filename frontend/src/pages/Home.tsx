@@ -1,16 +1,8 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Contours from "../components/Contours";
 import Jokes from "../components/Jokes";
 import ProductCard from "../components/ProductCard";
 import { useProducts } from "../useProducts";
-
-const SCALE = [
-  ["1.0", "Pond Dweller", "Owns one good hat. Wears it sideways."],
-  ["5.0", "Gentleman of the Shallows", "Bows to passing ducks. Ducks bow back."],
-  ["9.0", "Lord of the Riverbank", "The crocodiles stand when he enters."],
-  ["10+", "Sir Hippo", "Instrument maxed out. Needle politely bent."],
-];
 
 export default function Home() {
   const state = useProducts();
@@ -25,24 +17,26 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <Contours />
         <div className="wrap hero__inner">
-          <div className="hero__top">
-            <span className="mono">Survey of the Watering Hole · Bulletin No. 1</span>
-            <span className="mono">Depth 5 ft · Wallowing permitted</span>
-          </div>
-          <h1>
-            <span>Sir</span>
-            <span>
-              <span className="tag">Hippo</span>
-            </span>
-          </h1>
-          <p className="lede">
-            Fine apparel for the most distinguished gentleman of the riverbank. Every piece is printed when you order it,
-            as Sir Hippo would insist.
-          </p>
-          <div>
-            <Link to="/#shop" className="btn btn--primary">Shop the collection</Link>
+          <img
+            className="hero__logo"
+            src="/sir-hippo-logo.webp"
+            alt="Sir Hippo, a crowned hippo in sunglasses lounging in a deck chair"
+            width="1065"
+            height="971"
+          />
+          <div className="hero__copy">
+            <span className="sticker">Funny. Sarcastic. Cool.</span>
+            <h1>
+              Heavy is the <span className="hl">Crown</span>
+            </h1>
+            <p className="lede">
+              Royally unbothered tees and hoodies with prints that say what you were already thinking. Every piece is
+              printed when you order it, because the king does not wait in line.
+            </p>
+            <div>
+              <Link to="/#shop" className="btn btn--gold">Shop the collection</Link>
+            </div>
           </div>
         </div>
       </section>
@@ -50,8 +44,8 @@ export default function Home() {
       <section className="band" id="shop">
         <div className="wrap">
           <div className="sec-head">
-            <span className="mono">Collection · Printed to order</span>
-            <h2>The goods</h2>
+            <span className="label">The royal collection · Printed to order</span>
+            <h2>Fresh from the throne</h2>
           </div>
           {state.status === "loading" ? <p className="muted">Loading the collection…</p> : null}
           {state.status === "error" ? <p className="notice notice--error">{state.message}</p> : null}
@@ -77,25 +71,6 @@ export default function Home() {
       </section>
 
       <Jokes />
-
-      <section className="band">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="mono">Reference · The Hippo Scale of Distinction</span>
-            <h2>How gentlemen are measured</h2>
-            <p>Like earthquakes, distinction is rated on a logarithmic scale. Each step is ten times more gentleman than the last.</p>
-          </div>
-          <ol className="scale">
-            {SCALE.map(([mag, name, note], i) => (
-              <li key={mag} className={i === SCALE.length - 1 ? "max" : undefined}>
-                <span className="scale__mag">{mag}</span>
-                <span className="scale__name">{name}</span>
-                <p>{note}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
     </>
   );
 }

@@ -102,7 +102,7 @@ function ProductDetail({ product }: { product: Product }) {
       </div>
 
       <div className="product__info">
-        <Link to="/#shop" className="mono">← Collection</Link>
+        <Link to="/#shop" className="label">← Collection</Link>
         <h1 className="product__title">{product.title}</h1>
         <p className="product__price">
           {variant ? formatCents(variant.priceCents) : "Not available in this combination"}
@@ -110,7 +110,7 @@ function ProductDetail({ product }: { product: Product }) {
 
         {product.options.map((option, index) => (
           <fieldset key={option.name} className="option">
-            <legend className="mono">
+            <legend className="label">
               {optionLabel(option)}:{" "}
               <strong>{option.values.find((v) => v.id === selected[index])?.title}</strong>
             </legend>
@@ -140,7 +140,7 @@ function ProductDetail({ product }: { product: Product }) {
 
         <div className="buy">
           <label className="qty">
-            <span className="mono">Qty</span>
+            <span className="label">Qty</span>
             <select id="qty" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
               {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
                 <option key={n} value={n}>{n}</option>
