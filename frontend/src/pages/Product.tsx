@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../cart";
+import { preload, sized, whenIdle } from "../images";
 import { formatCents } from "../money";
 import type { Product } from "../types";
 import { useProducts } from "../useProducts";
@@ -54,6 +55,33 @@ function ProductDetail({ product }: { product: Product }) {
   const mainSrc = shownImage ?? image?.src;
   const variantImages = variant ? product.images.filter((img) => img.variantIds.includes(variant.id)) : product.images;
 
+  // The photo for picking `valueId` for option `index`: the matching variant's, keeping the other
+  // picks where possible, otherwise any variant with that value.
+  const imageFor = (index: number, valueId: number) => {
+    const picks = selected.map((id, i) => (i === index ? valueId : id));
+    const match =
+      product.variants.find((v) => picks.every((id) => v.optionIds.includes(id))) ??
+      product.variants.find((v) => v.optionIds.includes(valueId));
+    return match ? product.images.find((img) => img.variantIds.includes(match.id))?.src : undefined;
+  };
+
+  // Load a small copy of every color's photo in the background, so switching colors shows
+  // something right away while the full-size photo loads.
+  useEffect(
+    () =>
+      whenIdle(() => {
+        product.options.forEach((option, index) => {
+          if (option.type !== "color") return;
+          option.values.forEach((value) => {
+            const src = imageFor(index, value.id);
+            if (src) preload(sized(src, 400));
+          });
+        });
+      }),
+    // Only on opening the product; the small copies don't depend on the other picks.
+    [product.id],
+  );
+
   // Whether picking `valueId` for option `index` (keeping the other picks) lands on something in stock.
   const reachable = (index: number, valueId: number) => {
     const picks = selected.map((id, i) => (i === index ? valueId : id));
@@ -83,7 +111,13 @@ function ProductDetail({ product }: { product: Product }) {
   return (
     <div className="wrap band product">
       <div className="product__gallery">
-        <div className="product__main">{mainSrc ? <img src={mainSrc} alt={product.title} /> : null}</div>
+        <div
+          className="product__main"
+          // The small copy shows underneath while the full-size photo loads.
+          style={mainSrc ? { backgroundImage: `url("${sized(mainSrc, 400)}")` } : undefined}
+        >
+          {mainSrc ? <img key={mainSrc} src={mainSrc} alt={product.title} /> : null}
+        </div>
         {variantImages.length > 1 ? (
           <div className="thumbs">
             {variantImages.slice(0, 8).map((img) => (
@@ -94,7 +128,7 @@ function ProductDetail({ product }: { product: Product }) {
                 onClick={() => setShownImage(img.src)}
                 aria-label="Show this view"
               >
-                <img src={img.src} alt="" />
+                <img src={sized(img.src, 200)} alt="" />
               </button>
             ))}
           </div>
@@ -128,6 +162,10 @@ function ProductDetail({ product }: { product: Product }) {
                     aria-pressed={active}
                     aria-label={isColor ? `${value.title}${ok ? "" : ", out of stock"}` : undefined}
                     title={value.title}
+                    // Start the full-size photo as soon as a color is about to be picked.
+                    onPointerEnter={() => preload(imageFor(index, value.id))}
+                    onFocus={() => preload(imageFor(index, value.id))}
+                    onTouchStart={() => preload(imageFor(index, value.id))}
                     onClick={() => pick(index, value.id)}
                   >
                     {isColor ? null : value.title}

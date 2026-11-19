@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { sized, srcSet } from "../images";
 import { formatCents } from "../money";
 import type { Product } from "../types";
 
@@ -9,7 +10,15 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link to={`/products/${product.id}`} className="card">
       <div className="card__image">
-        {image ? <img src={image.src} alt={product.title} loading="lazy" /> : null}
+        {image ? (
+          <img
+            src={sized(image.src, 400)}
+            srcSet={srcSet(image.src, 400)}
+            sizes="(max-width: 600px) 92vw, 280px"
+            alt={product.title}
+            loading="lazy"
+          />
+        ) : null}
         {soldOut ? <span className="badge">Sold out</span> : null}
       </div>
       <div className="card__body">

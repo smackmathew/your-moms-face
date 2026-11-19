@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { startCheckout } from "../api";
 import { useCart } from "../cart";
+import { sized } from "../images";
 import { formatCents } from "../money";
 
 export default function CartPage() {
@@ -43,7 +44,7 @@ export default function CartPage() {
           {cart.lines.map((l) => (
             <li key={`${l.productId}:${l.variantId}`} className="line">
               <Link to={`/products/${l.productId}`} className="line__image">
-                {l.image ? <img src={l.image} alt="" /> : null}
+                {l.image ? <img src={sized(l.image, 200)} alt="" /> : null}
               </Link>
               <div className="line__info">
                 <Link to={`/products/${l.productId}`} className="line__title">{l.title}</Link>
