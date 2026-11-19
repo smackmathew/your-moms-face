@@ -1,0 +1,47 @@
+# Deploys the site and functions to Firebase whenever main changes, so no
+# computer needs a local copy. Needs the FIREBASE_SERVICE_ACCOUNT repository
+# secret: a JSON key for a deploy-only service account (see the README).
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            functions/package-lock.json
+
+      - name: Install
+        run: |
+          npm ci --prefix functions
+          npm ci --prefix frontend
+
+      - name: Test
+        run: npm test --prefix functions
+
+      - name: Deploy to Firebase
+        env:
+          SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$SERVICE_ACCOUNT" ]; then
+            echo "::error::Add the FIREBASE_SERVICE_ACCOUNT secret (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          printf '%s' "$SERVICE_ACCOUNT" > "$RUNNER_TEMP/service-account.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/service-account.json"
+          npx --yes firebase-tools@15.34.0 deploy --project your-moms-face --non-interactive --force

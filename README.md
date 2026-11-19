@@ -71,6 +71,28 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
 
 The custom domain (sirhippo.com) is set up in Firebase console → Hosting → Add custom domain, with the DNS records it lists added at the domain registrar (Bluehost).
 
+## Deploying
+
+Every push to `main` deploys the site, the functions and the Firestore rules from GitHub
+(`.github/workflows/deploy.yml`), after the functions' tests pass. No computer needs a copy of
+the code. To redeploy without a change, open the repo's **Actions** tab, pick **Deploy**, and
+click **Run workflow**.
+
+It deploys as a Google service account whose JSON key is stored in the repository secret
+`FIREBASE_SERVICE_ACCOUNT`. One-time setup:
+
+1. In the [Google Cloud console](https://console.cloud.google.com/iam-admin/serviceaccounts?project=your-moms-face),
+   create a service account (for example `github-deploy`) with these roles: Firebase Hosting
+   Admin, Cloud Functions Developer, Firebase Rules Admin, Secret Manager Viewer, Service
+   Account User and Service Usage Consumer.
+2. On the account's **Keys** tab, add a JSON key. It downloads as a file.
+3. In GitHub, go to **Settings → Secrets and variables → Actions → New repository secret**,
+   name it `FIREBASE_SERVICE_ACCOUNT`, and paste the whole file's contents. Then delete the file.
+
+Secrets the site uses (Printify token, Stripe keys) stay in Firebase and are changed with
+`firebase functions:secrets:set`, as in [Putting it online](#putting-it-online); after changing
+one, run the Deploy workflow so the functions pick it up.
+
 ## Settings (`functions/.env`)
 
 | Setting | What it does |
