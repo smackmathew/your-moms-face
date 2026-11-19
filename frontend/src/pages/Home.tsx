@@ -4,6 +4,9 @@ import Jokes from "../components/Jokes";
 import ProductCard from "../components/ProductCard";
 import { useProducts } from "../useProducts";
 
+// The piece of apparel Sir Hippo wears in the hero, and its product in Printify.
+const HERO_OUTFIT = { name: "Your Moms Face Square Hoodie", productId: "6ad1af315487ff30db0f2e6c" };
+
 export default function Home() {
   const state = useProducts();
   const { hash } = useLocation();
@@ -18,13 +21,17 @@ export default function Home() {
     <>
       <section className="hero">
         <div className="wrap hero__inner">
-          <img
-            className="hero__logo"
-            src="/sir-hippo-standing.webp"
-            alt="Sir Hippo in his crown and sunglasses, leaning on his gold scepter like a cane"
-            width="539"
-            height="720"
-          />
+          {/* Sir Hippo models a different piece of the collection in each part of the site. */}
+          <Link to={`/products/${HERO_OUTFIT.productId}`} className="hero__figure">
+            <img
+              className="hero__logo"
+              src="/sir-hippo-hero-ymf-hoodie.webp"
+              alt={`Sir Hippo leaning on his gold scepter, wearing the ${HERO_OUTFIT.name}`}
+              width="560"
+              height="758"
+            />
+            <span className="wearing">Wearing: {HERO_OUTFIT.name} →</span>
+          </Link>
           <div className="hero__copy">
             <span className="sticker">Funny. Sarcastic. Cool.</span>
             <h1>

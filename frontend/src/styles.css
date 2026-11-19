@@ -125,7 +125,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 2.5rem; align-items: center;
   padding-block: 2.5rem 3.5rem;
 }
-.hero__logo { width: 100%; max-width: 24rem; height: auto; justify-self: center; }
+.hero__figure { display: grid; justify-items: center; gap: 0.6rem; text-decoration: none; justify-self: center; }
+.hero__logo { width: 100%; max-width: 24rem; height: auto; transition: transform 0.2s; }
+.hero__figure:hover .hero__logo { transform: rotate(-1.5deg) scale(1.02); }
+.wearing { font-family: var(--f-marker); font-size: 0.95rem; color: var(--muted); }
+.hero__figure:hover .wearing { color: var(--ink); text-decoration: underline; }
 .hero__copy { display: grid; gap: 1.25rem; justify-items: start; }
 .sticker {
   font-family: var(--f-marker); font-size: 1.15rem; color: var(--ink);

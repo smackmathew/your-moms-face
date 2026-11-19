@@ -20,7 +20,7 @@ const printifyShopId = defineString("PRINTIFY_SHOP_ID");
 // Empty means "the address the customer is shopping on".
 const siteUrl = defineString("SITE_URL", { default: "" });
 // Where published products link to when SITE_URL is empty.
-const DEFAULT_SITE_URL = "https://your-moms-face.web.app";
+const DEFAULT_SITE_URL = "https://sirhippo.com";
 const flatShippingCents = defineString("FLAT_SHIPPING_CENTS", { default: "599" });
 const shipCountries = defineString("SHIP_COUNTRIES", { default: "US" });
 const autoSendToProduction = defineString("AUTO_SEND_TO_PRODUCTION", { default: "false" });
