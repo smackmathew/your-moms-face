@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 const READINGS = [
-  "Your moms face is so famous, mirrors ask it for an autograph.",
-  "Your moms face is so bright, NASA uses it as a navigation landmark.",
-  "Your moms face shows up on Google Maps in satellite view.",
-  "Your moms face is so wide, it has two time zones and a red-eye between them.",
-  "Your moms face is so legendary, Mount Rushmore asked for a fifth slot.",
-  "Your moms face is so big, it has its own weather system.",
-  "When your moms face smiles, the sun takes the day off.",
-  "Your moms face is so memorable, the DMV kept a second photo for themselves.",
-  "Your moms face is so iconic, emojis study it for reference.",
-  "Your moms face is so warm, penguins migrate toward it in winter.",
+  "A gentleman never rushes. Neither does a hippo.",
+  "Sir Hippo does not swim. The river simply makes room.",
+  "Always dress for the mud you want, not the mud you have.",
+  "Sir Hippo weighs three tons, all of it manners.",
+  "A good hat is like a good river: it should be wide and slightly damp.",
+  "Sir Hippo has never lost an argument. He just sits on it.",
+  "Tea at four. Wallow at five. Never the other way round.",
+  "Sir Hippo yawns only to show off his excellent dental work.",
+  "The crocodiles call him Sir. The crocodiles are not stupid.",
+  "When Sir Hippo enters the pond, the pond rises to greet him.",
 ];
 
 export default function Jokes() {
@@ -18,10 +18,10 @@ export default function Jokes() {
   return (
     <section className="band band--jokes">
       <div className="wrap jokes">
-        <span className="mono">Field reading {String(i + 1).padStart(2, "0")} of {READINGS.length}</span>
+        <span className="mono">Maxim {String(i + 1).padStart(2, "0")} of {READINGS.length}</span>
         <p className="jokes__text" aria-live="polite">{READINGS[i]}</p>
         <button type="button" className="btn" onClick={() => setI((i + 1) % READINGS.length)}>
-          Take another reading
+          Another maxim, please
         </button>
       </div>
     </section>

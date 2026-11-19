@@ -12,7 +12,7 @@ export class PrintifyClient {
       headers: {
         Authorization: `Bearer ${this.token}`,
         "Content-Type": "application/json",
-        "User-Agent": "YourMomsFace-Store",
+        "User-Agent": "SirHippo-Store",
         ...init.headers,
       },
     });

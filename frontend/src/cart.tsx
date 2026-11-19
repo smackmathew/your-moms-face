@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { CartLine } from "./types";
 
-const KEY = "ymf-cart";
+const KEY = "sir-hippo-cart";
 const MAX_QUANTITY = 20;
 
 interface Cart {

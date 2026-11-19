@@ -6,10 +6,10 @@ import ProductCard from "../components/ProductCard";
 import { useProducts } from "../useProducts";
 
 const SCALE = [
-  ["1.0", "Acquaintance", "Recognized at the grocery store. Barely."],
-  ["5.0", "Regional", "Appears on local news during a slow week."],
-  ["9.0", "Planetary", "Tides adjust out of respect."],
-  ["10+", "Your Moms Face", "Instrument maxed out. Needle bent."],
+  ["1.0", "Pond Dweller", "Owns one good hat. Wears it sideways."],
+  ["5.0", "Gentleman of the Shallows", "Bows to passing ducks. Ducks bow back."],
+  ["9.0", "Lord of the Riverbank", "The crocodiles stand when he enters."],
+  ["10+", "Sir Hippo", "Instrument maxed out. Needle politely bent."],
 ];
 
 export default function Home() {
@@ -28,19 +28,18 @@ export default function Home() {
         <Contours />
         <div className="wrap hero__inner">
           <div className="hero__top">
-            <span className="mono">Survey of Notable Landforms · Bulletin No. 1</span>
-            <span className="mono">Elev. ∞ ft · Visible from orbit</span>
+            <span className="mono">Survey of the Watering Hole · Bulletin No. 1</span>
+            <span className="mono">Depth 5 ft · Wallowing permitted</span>
           </div>
           <h1>
-            <span>Your</span>
-            <span>Moms</span>
+            <span>Sir</span>
             <span>
-              <span className="tag">Face</span>
+              <span className="tag">Hippo</span>
             </span>
           </h1>
           <p className="lede">
-            Apparel for the most studied, most mapped, most talked-about landmark on the playground. Every piece is printed
-            when you order it.
+            Fine apparel for the most distinguished gentleman of the riverbank. Every piece is printed when you order it,
+            as Sir Hippo would insist.
           </p>
           <div>
             <Link to="/#shop" className="btn btn--primary">Shop the collection</Link>
@@ -82,9 +81,9 @@ export default function Home() {
       <section className="band">
         <div className="wrap">
           <div className="sec-head">
-            <span className="mono">Reference · Face Magnitude Scale</span>
-            <h2>How faces are measured</h2>
-            <p>Like earthquakes, faces are rated on a logarithmic scale. Each step is ten times more face than the last.</p>
+            <span className="mono">Reference · The Hippo Scale of Distinction</span>
+            <h2>How gentlemen are measured</h2>
+            <p>Like earthquakes, distinction is rated on a logarithmic scale. Each step is ten times more gentleman than the last.</p>
           </div>
           <ol className="scale">
             {SCALE.map(([mag, name, note], i) => (

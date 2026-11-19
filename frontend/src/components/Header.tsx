@@ -7,7 +7,7 @@ export default function Header() {
     <header className="site-header">
       <div className="wrap site-header__row">
         <Link to="/" className="wordmark">
-          Your Moms <span>Face</span>
+          Sir <span>Hippo</span>
         </Link>
         <nav className="site-nav">
           <Link to="/#shop" className="mono">Shop</Link>

@@ -35,7 +35,7 @@ const specs: Spec[] = [
   {
     id: "sample-contour-tee",
     title: "Contour Tee",
-    description: "The survey map of the most famous landmark on the playground, printed on the chest.\nHeavyweight cotton, unisex fit.",
+    description: "The survey map of Sir Hippo's favorite watering hole, printed on the chest.\nHeavyweight cotton, unisex fit.",
     garment: "tee",
     colors: [
       { title: "Black", hex: "#1D211F", ink: "#E9A23B" },
@@ -48,7 +48,7 @@ const specs: Spec[] = [
   {
     id: "sample-visible-from-orbit-hoodie",
     title: "Visible From Orbit Hoodie",
-    description: "Midweight fleece pullover with front pocket. Big enough to have its own weather system.",
+    description: "Midweight fleece pullover with front pocket. Roomy enough for a gentleman of substance.",
     garment: "hoodie",
     colors: [
       { title: "Hi-Vis", hex: "#E9A23B", ink: "#1A2520" },
@@ -72,7 +72,7 @@ const specs: Spec[] = [
   {
     id: "sample-field-survey-tee",
     title: "Field Survey Tee",
-    description: "Garment-dyed tee for fieldwork, recess and comebacks. Relaxed fit.",
+    description: "Garment-dyed tee for riverbank strolls and afternoon wallows. Relaxed fit.",
     garment: "tee",
     colors: [
       { title: "Clay", hex: "#B9805E", ink: "#1A2520" },

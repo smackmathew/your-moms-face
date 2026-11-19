@@ -1,6 +1,6 @@
-# Your Moms Face
+# Sir Hippo
 
-The storefront for Your Moms Face apparel. Products come from your **Printify** shop, customers
+The storefront for Sir Hippo apparel, at [sirhippo.com](https://sirhippo.com). Products come from your **Printify** shop, customers
 pay through **Stripe Checkout**, and each paid order is placed at Printify automatically, which
 prints and ships it.
 
@@ -69,7 +69,7 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
    `AUTO_SEND_TO_PRODUCTION=true` in `functions/.env` and redeploy so paid orders go straight
    to print. Switch to your live Stripe key when you're ready to sell.
 
-A custom domain goes in Firebase console → Hosting → Add custom domain.
+The custom domain (sirhippo.com) is set up in Firebase console → Hosting → Add custom domain, with the DNS records it lists added at the domain registrar (Bluehost).
 
 ## Settings (`functions/.env`)
 
