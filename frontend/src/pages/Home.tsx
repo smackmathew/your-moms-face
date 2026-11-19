@@ -57,7 +57,7 @@ export default function Home() {
                 </p>
               ) : null}
               {state.products.length === 0 ? (
-                <p className="muted">Nothing is for sale yet. Publish a product in Printify and it shows up here.</p>
+                <p className="muted">New drops are on the way. Check back soon.</p>
               ) : (
                 <div className="grid">
                   {state.products.map((p) => (

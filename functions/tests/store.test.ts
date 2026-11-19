@@ -14,6 +14,7 @@ import {
 const tee: PrintifyProduct = {
   id: "p1",
   title: "Contour Tee",
+  external: { id: "p1", handle: "https://example.com/products/p1" },
   description: "<p>Soft cotton.</p><ul><li>100% cotton</li><li>Unisex fit</li></ul>",
   images: [
     { src: "https://img/black.png", variant_ids: [1, 2], is_default: false },
@@ -52,7 +53,9 @@ describe("toStoreProduct", () => {
     expect(p.variants.find((v) => v.id === 2)!.available).toBe(false);
   });
 
-  it("hides products that aren't visible or have nothing to buy", () => {
+  it("hides products that aren't published, visible, or buyable", () => {
+    expect(toStoreProduct({ ...tee, external: null })).toBeNull();
+    expect(toStoreProduct({ ...tee, external: undefined, is_locked: true })).toBeNull();
     expect(toStoreProduct({ ...tee, visible: false })).toBeNull();
     expect(toStoreProduct({ ...tee, variants: tee.variants.map((v) => ({ ...v, is_enabled: false })) })).toBeNull();
   });

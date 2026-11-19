@@ -37,10 +37,10 @@ You need Node.js 22, the Firebase CLI (`npm i -g firebase-tools`), and a Firebas
      Orders from this site land in that store.
    - In that store's settings, set **Order approval** to **Manual** while you test. New stores
      approve orders on their own after 24 hours and send them to print.
-   - Design your products in that store. You don't need to click **Publish**: products appear on
-     the site once they're saved. In an API store, Publish only locks the product in Printify.
-   - Create a token under **My Profile → Connections** with the `shops.read`, `products.read`
-     and `orders.write` scopes. Printify shows it once, and it expires after a year.
+   - Design your products in that store and click **Publish** on the ones to sell. Only published
+     products appear on the site (see [Publishing products](#publishing-products)).
+   - Create a token under **My Profile → Connections** with the `shops.read`, `products.read`,
+     `products.write` and `orders.write` scopes. Printify shows it once, and it expires after a year.
    - Find your shop ID:
      `curl -H "Authorization: Bearer YOUR_TOKEN" https://api.printify.com/v1/shops.json`
 2. **Stripe**: from the Stripe dashboard, copy your secret key (start with the test-mode key).
@@ -83,8 +83,10 @@ It deploys as a Google service account whose JSON key is stored in the repositor
 
 1. In the [Google Cloud console](https://console.cloud.google.com/iam-admin/serviceaccounts?project=your-moms-face),
    create a service account (for example `github-deploy`) with these roles: Firebase Hosting
-   Admin, Cloud Functions Developer, Firebase Rules Admin, Secret Manager Viewer, Service
-   Account User and Service Usage Consumer.
+   Admin, Cloud Functions Developer, Cloud Scheduler Admin, Firebase Rules Admin, Secret Manager
+   Viewer, Service Account User and Service Usage Consumer. The project also needs the
+   [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com?project=your-moms-face)
+   turned on.
 2. On the account's **Keys** tab, add a JSON key. It downloads as a file.
 3. In GitHub, go to **Settings → Secrets and variables → Actions → New repository secret**,
    name it `FIREBASE_SERVICE_ACCOUNT`, and paste the whole file's contents. Then delete the file.
@@ -92,6 +94,14 @@ It deploys as a Google service account whose JSON key is stored in the repositor
 Secrets the site uses (Printify token, Stripe keys) stay in Firebase and are changed with
 `firebase functions:secrets:set`, as in [Putting it online](#putting-it-online); after changing
 one, run the Deploy workflow so the functions pick it up.
+
+## Publishing products
+
+The site shows only products that are published in the Printify store. In an API store, clicking
+**Publish** in Printify only locks the product until the store confirms it, and Printify unlocks it
+as unpublished if nothing confirms within an hour. The `confirmPublishing` function checks every
+5 minutes and confirms each product waiting to publish, so a product shows on the site within about
+10 minutes of clicking Publish. To take one off the site, delete it from the Printify store.
 
 ## Settings (`functions/.env`)
 

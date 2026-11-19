@@ -7,6 +7,10 @@ export interface PrintifyProduct {
   title: string;
   description: string;
   visible?: boolean;
+  /** True while a publish is waiting for the store to confirm it. */
+  is_locked?: boolean;
+  /** Set once the store confirms a publish; a product without it isn't published. */
+  external?: { id?: string; handle?: string } | null;
   images: { src: string; variant_ids: number[]; position?: string; is_default?: boolean }[];
   options: { name: string; type: string; values: { id: number; title: string; colors?: string[] }[] }[];
   variants: {
@@ -50,9 +54,17 @@ export function mockupVariantId(src: string): number | null {
   return m ? Number(m[1]) : null;
 }
 
-/** Keeps only the variants a customer can buy. Returns null when there are none. */
+/** Whether the product has been published to this store in Printify. */
+export function isPublished(p: PrintifyProduct): boolean {
+  return p.visible !== false && Boolean(p.external?.id);
+}
+
+/**
+ * The storefront version of a published product, keeping only the variants a customer can buy.
+ * Returns null for unpublished products and for products with nothing to buy.
+ */
 export function toStoreProduct(p: PrintifyProduct): StoreProduct | null {
-  if (p.visible === false) return null;
+  if (!isPublished(p)) return null;
   const variants = p.variants
     .filter((v) => v.is_enabled)
     .map((v) => ({

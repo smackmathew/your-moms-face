@@ -3,6 +3,7 @@ import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { logger } from "firebase-functions";
 import { defineSecret, defineString } from "firebase-functions/params";
 import { onRequest } from "firebase-functions/v2/https";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 import Stripe from "stripe";
 import { PrintifyClient } from "./printify.js";
 import { buildPrintifyOrder, CartError, priceCart, toStoreProduct, type CartItem, type PaidSession, type StoreProduct } from "./store.js";
@@ -18,6 +19,8 @@ const stripeWebhookSecret = defineSecret("STRIPE_WEBHOOK_SECRET");
 const printifyShopId = defineString("PRINTIFY_SHOP_ID");
 // Empty means "the address the customer is shopping on".
 const siteUrl = defineString("SITE_URL", { default: "" });
+// Where published products link to when SITE_URL is empty.
+const DEFAULT_SITE_URL = "https://your-moms-face.web.app";
 const flatShippingCents = defineString("FLAT_SHIPPING_CENTS", { default: "599" });
 const shipCountries = defineString("SHIP_COUNTRIES", { default: "US" });
 const autoSendToProduction = defineString("AUTO_SEND_TO_PRODUCTION", { default: "false" });
@@ -122,6 +125,26 @@ export const checkout = onRequest({ secrets: [printifyToken, stripeSecretKey] },
     logger.error("Creating the Stripe checkout failed", err);
     res.status(502).json({ error: "Checkout isn't available right now. Try again in a minute." });
   }
+});
+
+/**
+ * In a Printify API store, clicking Publish only locks the product until the store confirms it.
+ * Every few minutes this confirms each product waiting to publish, which marks it published in
+ * Printify and puts it on the site. Unconfirmed products would unlock as unpublished after an hour.
+ */
+export const confirmPublishing = onSchedule({ schedule: "every 5 minutes", secrets: [printifyToken] }, async () => {
+  const client = printify();
+  const waiting = (await client.listProducts()).filter((p) => p.is_locked);
+  const base = (siteUrl.value() || DEFAULT_SITE_URL).replace(/\/$/, "");
+  for (const p of waiting) {
+    try {
+      await client.publishingSucceeded(p.id, { id: p.id, handle: `${base}/products/${p.id}` });
+      logger.info(`Published "${p.title}" (${p.id}) to the site`);
+    } catch (err) {
+      logger.error(`Couldn't confirm publishing for "${p.title}" (${p.id})`, err);
+    }
+  }
+  if (waiting.length > 0) catalog = null;
 });
 
 /** Stripe calls this when a checkout is paid; it places the order at Printify. */

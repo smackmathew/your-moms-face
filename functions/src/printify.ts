@@ -33,6 +33,14 @@ export class PrintifyClient {
     }
   }
 
+  /** Tells Printify the product is live on the site, which unlocks it and marks it published. */
+  publishingSucceeded(productId: string, external: { id: string; handle: string }): Promise<unknown> {
+    return this.call(`/shops/${this.shopId}/products/${productId}/publishing_succeeded.json`, {
+      method: "POST",
+      body: JSON.stringify({ external }),
+    });
+  }
+
   createOrder(order: PrintifyOrder): Promise<{ id: string }> {
     return this.call(`/shops/${this.shopId}/orders.json`, { method: "POST", body: JSON.stringify(order) });
   }
