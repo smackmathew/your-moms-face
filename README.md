@@ -83,7 +83,7 @@ It deploys as a Google service account whose JSON key is stored in the repositor
 
 1. In the [Google Cloud console](https://console.cloud.google.com/iam-admin/serviceaccounts?project=your-moms-face),
    create a service account (for example `github-deploy`) with these roles: Firebase Hosting
-   Admin, Cloud Functions Developer, Cloud Scheduler Admin, Firebase Rules Admin, Secret Manager
+   Admin, Cloud Functions Admin, Cloud Scheduler Admin, Firebase Rules Admin, Secret Manager
    Viewer, Service Account User and Service Usage Consumer. The project also needs the
    [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com?project=your-moms-face)
    turned on.

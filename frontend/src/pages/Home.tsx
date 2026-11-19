@@ -20,10 +20,10 @@ export default function Home() {
         <div className="wrap hero__inner">
           <img
             className="hero__logo"
-            src="/sir-hippo-logo.webp"
-            alt="Sir Hippo, a crowned hippo in sunglasses lounging in a deck chair"
-            width="1065"
-            height="971"
+            src="/sir-hippo-standing.webp"
+            alt="Sir Hippo in his crown and sunglasses, leaning on his gold scepter like a cane"
+            width="539"
+            height="720"
           />
           <div className="hero__copy">
             <span className="sticker">Funny. Sarcastic. Cool.</span>

@@ -44,4 +44,7 @@ jobs:
           fi
           printf '%s' "$SERVICE_ACCOUNT" > "$RUNNER_TEMP/service-account.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/service-account.json"
-          npx --yes firebase-tools@15.34.0 deploy --project your-moms-face --non-interactive --force
+          firebase() { npx --yes firebase-tools@15.34.0 "$@" --project your-moms-face --non-interactive --force; }
+          # The site and rules go first, so a functions problem can't hold back a site change.
+          firebase deploy --only hosting,firestore
+          firebase deploy --only functions
